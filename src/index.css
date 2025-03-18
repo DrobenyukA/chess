@@ -1,0 +1,21 @@
+:root {
+  --gap: 1rem;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100vh;
+}
+
+#root {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
