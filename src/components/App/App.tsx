@@ -4,7 +4,7 @@ import './styles.css';
 export const App = () => {
   return (
     <main>
-      <Board />
+      <Board></Board>
     </main>
   );
 };

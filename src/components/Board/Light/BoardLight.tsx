@@ -1,21 +1,21 @@
-import { RefObject, useRef } from 'react';
-import { useHelper } from '@react-three/drei';
-import { DirectionalLight, DirectionalLightHelper, Object3D } from 'three';
-import { useControls } from 'leva';
+import { /* RefObject, */ useRef } from 'react';
+import { DirectionalLight /* , DirectionalLightHelper, Object3D */ } from 'three';
+// import { useHelper } from '@react-three/drei';
+// import { useControls } from 'leva';
 
 export const Light = () => {
   const directionalLightRef = useRef<DirectionalLight>(null);
-  const { color, intensity } = useControls({
-    color: '#ffffff',
-    intensity: {
-      value: 0.5,
-      min: 0,
-      max: 5,
-      step: 0.25,
-    },
-  });
+  // const { color, intensity } = useControls({
+  //   color: '#ffffff',
+  //   intensity: {
+  //     value: 0.5,
+  //     min: 0,
+  //     max: 5,
+  //     step: 0.25,
+  //   },
+  // });
 
-  useHelper(directionalLightRef as RefObject<Object3D>, DirectionalLightHelper, intensity, color);
+  // useHelper(directionalLightRef as RefObject<Object3D>, DirectionalLightHelper, intensity, color);
 
   return (
     <>
