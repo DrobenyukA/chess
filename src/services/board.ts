@@ -12,11 +12,17 @@ const getType = (row: number, col: number) => {
 };
 
 const BASE_TILE_HEIGHT = -0.125;
+const X_AXIS_OFFSET = 3.5;
+const Z_AXIS_OFFSET = 3.5;
 
 const createBoardTile = (row: number, col: number) => ({
   type: getType(row, col),
   status: row === 0 && col === 0 ? BoardTileState.Selected : BoardTileState.Idle,
-  position: [col, BASE_TILE_HEIGHT, row] as [number, number, number],
+  position: [col - X_AXIS_OFFSET, BASE_TILE_HEIGHT, row - Z_AXIS_OFFSET] as [
+    number,
+    number,
+    number,
+  ],
 });
 
 export const createBoardRow = (row: number) =>

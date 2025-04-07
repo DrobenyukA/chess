@@ -11,6 +11,7 @@ import { Light } from './Light';
 import { degToRad } from 'three/src/math/MathUtils.js';
 
 interface Props {
+  mode?: 'game' | 'debug';
   children?: React.ReactNode;
 }
 
@@ -19,11 +20,12 @@ interface State {
   board: BoardType;
 }
 
-export const Board = ({ children }: Props) => {
+export const Board = ({ mode = 'game', children }: Props) => {
   const [state, setState] = useState<State>({
     isCameraEnabled: true,
     board: createBoard(),
   });
+  const isDebugMode = mode === 'debug';
 
   const handleEnableCamera = useCallback(
     () => setState((prevState) => ({ ...prevState, isCameraEnabled: true })),
@@ -42,13 +44,17 @@ export const Board = ({ children }: Props) => {
       document.removeEventListener('enable-camera', handleEnableCamera);
       document.removeEventListener('disable-camera', handleDisableCamera);
     };
+    // Disables because we are interested in single invocation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Canvas camera={{ position: [2, 2, 0], fov: 44 }}>
+    <Canvas camera={{ position: [0, 8, 12], fov: 70 }}>
+      <axesHelper args={[5]} />
+
       <Light />
 
-      <Grid position={[0, 0, 0]} infiniteGrid={true} cellColor="white" />
+      {isDebugMode && <Grid position={[0, 0, 0]} infiniteGrid={true} cellColor="white" />}
 
       {Object.keys(state.board).map((rowId: string) => (
         <Fragment key={rowId}>
@@ -64,12 +70,13 @@ export const Board = ({ children }: Props) => {
       {children}
 
       <OrbitControls
+        position0={[0, 0, 0]}
         maxDistance={25}
         minDistance={10}
         enableZoom={false}
         minPolarAngle={degToRad(25)}
         maxPolarAngle={degToRad(65)}
-        minAzimuthAngle={degToRad(-85)}
+        minAzimuthAngle={degToRad(-90)}
         maxAzimuthAngle={degToRad(90)}
         // enableRotate={false}
         enablePan={false}
