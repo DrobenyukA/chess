@@ -1,7 +1,8 @@
 import { Fragment, useCallback, useLayoutEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Grid, OrbitControls } from '@react-three/drei';
+import { Grid, OrbitControls, Environment } from '@react-three/drei';
 import get from 'lodash/get';
+import { BackSide } from 'three';
 
 import { createBoard } from '@app/services/board';
 import { BoardColumn, BoardRow, Board as BoardType } from '@app/types';
@@ -54,6 +55,13 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
       <Light />
 
+      <Environment background="only">
+        <mesh scale={100}>
+          <sphereGeometry args={[1, 64, 64]} />
+          <meshBasicMaterial side={BackSide} color="#242424" />
+        </mesh>
+      </Environment>
+
       {isDebugMode && <Grid position={[0, 0, 0]} infiniteGrid={true} cellColor="white" />}
 
       {Object.keys(state.board).map((rowId: string) => (
@@ -67,10 +75,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
         </Fragment>
       ))}
 
-      {children}
-
       <OrbitControls
-        position0={[0, 0, 0]}
         maxDistance={25}
         minDistance={10}
         enableZoom={false}
@@ -82,6 +87,8 @@ export const Board = ({ mode = 'game', children }: Props) => {
         enablePan={false}
         enabled={state.isCameraEnabled}
       />
+
+      {children}
     </Canvas>
   );
 };
