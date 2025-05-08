@@ -1,5 +1,9 @@
-main {
-  padding: var(--gap);
+#root > main {
   color: #f8f8f8;
-  background-color: #212121;
+}
+
+#root > header {
+  display: flex;
+  padding: var(--gap);
+  align-items: center;
 }

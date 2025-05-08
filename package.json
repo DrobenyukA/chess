@@ -13,7 +13,9 @@
     "@react-spring/three": "9.7.5",
     "@react-three/drei": "10.0.4",
     "@react-three/fiber": "9.1.0",
+    "@reduxjs/toolkit": "2.8.1",
     "@types/node": "22.13.10",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "framer-motion": "12.6.3",
     "framer-motion-3d": "12.4.13",
     "leva": "0.10.0",
@@ -21,6 +23,7 @@
     "normalize.css": "8.0.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-redux": "9.2.0",
     "three": "0.174.0"
   },
   "devDependencies": {

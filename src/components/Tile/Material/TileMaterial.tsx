@@ -1,10 +1,9 @@
-import { JSX } from 'react';
-import { useSpring, animated } from '@react-spring/three';
-
 import { BoardColumn } from '@app/types';
+import { animated, useSpring } from '@react-spring/three';
+import { JSX } from 'react';
 
-import { getTileColor } from '../utils';
 import { TILE_EMISSIVE_COLOR } from '../constants';
+import { getTileColor } from '../utils';
 
 type Props = JSX.IntrinsicElements[`meshPhysicalMaterial`] & Omit<BoardColumn, 'position'>;
 

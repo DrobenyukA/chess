@@ -1,5 +1,21 @@
 :root {
+  --gap-0125: 0.125rem;
+  --gap-025: 0.25rem;
+  --gap-05: 0.5rem;
+  --gap-075: 0.75rem;
   --gap: 1rem;
+  --gap-2: 2rem;
+  --gap-4: 4rem;
+
+  --palette-background-primary: #212121;
+
+  --palette-accent-20: #E8FCCF;
+  --palette-accent-40: #96E072;
+  --palette-accent-60: #3DA35D;
+  --palette-accent-60: #3E8914;
+  --palette-accent-80: #134611;
+
+  --palette-text-primary: #f8f8f8;
 }
 
 html {
@@ -12,10 +28,13 @@ body {
   grid-template-rows: 1fr;
   width: 100%;
   height: 100vh;
+
+  color: var(--palette-text-primary);
+  background-color: var(--palette-background-primary);
 }
 
 #root {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 75px 1fr;
 }
