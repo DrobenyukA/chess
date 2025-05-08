@@ -20,7 +20,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Imports */
+    "baseUrl": "./",
+    "paths": {
+      /**
+        * Make sure to have same config in vite.config.ts
+        */
+      "@app/*": ["src/*"]
+    }
   },
   "include": ["src"]
 }
