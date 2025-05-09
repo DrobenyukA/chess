@@ -48,7 +48,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
   return (
     <Canvas camera={{ position: [0, 8, 12], fov: 70 }}>
-      <axesHelper args={[5]} />
+      {isDebugMode && <axesHelper args={[5]} />}
 
       <Light />
 
@@ -67,7 +67,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
             const colPath = `${rowId}.${colId}`;
             const tile = get(board, colPath, {} as BoardColumn);
 
-            return <Tile {...tile} />;
+            return <Tile key={colPath} {...tile} />;
           })}
         </Fragment>
       ))}

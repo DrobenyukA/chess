@@ -10,7 +10,7 @@ export const Light = () => (
       distance={0}
       decay={1.75}
     /> */}
-    <hemisphereLight color="#f8f8f8" groundColor="232323" intensity={7.5} />
+    <hemisphereLight color="#f8f8f8" groundColor="#232323" intensity={7.5} />
   </>
 );
 

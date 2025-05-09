@@ -7,8 +7,13 @@ import { board } from '@app/store/board';
 import { session } from '@app/store/session';
 import { useState } from 'react';
 
+import { Bishop } from '../Bishop';
 import { Board } from '../Board';
+import { King } from '../King';
+import { Knight } from '../Knight';
 import { Pawn } from '../Pawn';
+import { Queen } from '../Queen';
+import { Rook } from '../Rook/Rook';
 
 export const App = () => {
   const [state, setState] = useState({ row: ROWS[0], col: COLUMNS[0] });
@@ -84,6 +89,11 @@ export const App = () => {
         <Board>
           <Pawn position={[-4, -3]} type={FigureType.BLACK} />
           <Pawn position={[-4, 3]} type={FigureType.WHITE} />
+          <Rook position={[-4, 4]} type={FigureType.WHITE} />
+          <Knight position={[-3, 4]} type={FigureType.WHITE} />
+          <Bishop position={[-2, 4]} type={FigureType.WHITE} />
+          <King position={[-1, 4]} type={FigureType.WHITE} />
+          <Queen position={[0, 4]} type={FigureType.WHITE} />
         </Board>
       </main>
     </>
