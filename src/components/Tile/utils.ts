@@ -1,16 +1,16 @@
-import { BoardTileState, BoardTileType } from '@app/constants';
+import { BoardTileStatus, BoardTileType } from '@app/constants';
 
-export const getTileColor = (type: BoardTileType, status: BoardTileState) => {
-  if (status === BoardTileState.Highlighted) {
-    return '#13a31b';
+export const getTileColor = (type: BoardTileType, status: BoardTileStatus) => {
+  if (status === BoardTileStatus.Threat) {
+    return '#aa1515';
   }
 
-  if (status === BoardTileState.Selected && type === BoardTileType.White) {
-    return '#82b786';
+  if (status === BoardTileStatus.Highlighted) {
+    return '#ad902f';
   }
 
-  if (status === BoardTileState.Selected && type === BoardTileType.White) {
-    return '#033409';
+  if (status === BoardTileStatus.Selected) {
+    return '#088314';
   }
 
   if (type === BoardTileType.White) {
@@ -22,4 +22,18 @@ export const getTileColor = (type: BoardTileType, status: BoardTileState) => {
   }
 
   return '#838300';
+};
+
+export const getTileEmissive = (type: BoardTileType, status: BoardTileStatus) => {
+  if (status === BoardTileStatus.Selected) {
+    return '#000000';
+  }
+
+  if (type === BoardTileType.White) {
+    return '#838383';
+  }
+
+  if (type === BoardTileType.Black) {
+    return '#232323';
+  }
 };

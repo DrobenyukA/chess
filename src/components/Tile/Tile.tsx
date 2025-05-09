@@ -1,7 +1,7 @@
+import { BoardColumn } from '@app/types';
 import { JSX } from 'react';
 
 import { TileMaterial } from './Material';
-import { BoardColumn } from '@app/types';
 
 type Props = JSX.IntrinsicElements[`mesh`] & BoardColumn;
 

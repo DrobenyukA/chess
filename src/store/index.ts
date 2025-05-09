@@ -3,11 +3,13 @@ import { ActionCreatorsMapObject, bindActionCreators, configureStore } from '@re
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
+import { board } from './board';
 import { SNAPSHOT } from './constants';
 import { session } from './session';
 
 export const store = configureStore({
   reducer: {
+    [board.name]: board.reducer,
     [session.name]: session.reducer,
   },
 

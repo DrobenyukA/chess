@@ -1,7 +1,7 @@
-import { BoardRowName, BoardColumnName, BoardTileType, BoardTileState } from '@app/constants';
+import { BoardColumnName, BoardRowName, BoardTileStatus, BoardTileType } from '@app/constants';
 
 export interface BoardColumn {
-  status: BoardTileState;
+  status: BoardTileStatus;
   type: BoardTileType;
   /**
    * position in 3D space [x, y, z]

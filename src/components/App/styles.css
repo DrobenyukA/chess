@@ -6,4 +6,25 @@
   display: flex;
   padding: var(--gap);
   align-items: center;
+
+  gap: var(--gap-05);
+}
+
+.debug-controls {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.debug-controls > * {
+  flex-grow: 1;
+  flex-basis: 50%;
+}
+
+.debug-controls > button {
+  font-size: 0.75rem;
+  flex-basis: calc(100% / 3);
+}
+
+.debug-controls > select {
+  margin-bottom: var(--gap-0125);
 }
