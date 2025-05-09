@@ -1,11 +1,9 @@
-import { useRef } from 'react';
-
-import { useGLTF } from '@react-three/drei';
-import type * as THREE from 'three';
-import type { GLTF } from 'three-stdlib';
-
 import { FigureType } from '@app/constants/figures';
 import { transformPositionToVector } from '@app/services/figures';
+import { useGLTF } from '@react-three/drei';
+import { useRef } from 'react';
+import type * as THREE from 'three';
+import type { GLTF } from 'three-stdlib';
 
 import { Figure } from '../Figure';
 
@@ -25,7 +23,7 @@ interface Props {
 
 export const Pawn = ({ position, ...props }: Props) => {
   const ref = useRef(null);
-  const { nodes } = useGLTF(`/pawn.gltf`) as unknown as GLTFResult;
+  const { nodes } = useGLTF('/assets/figures/pawn.gltf') as unknown as GLTFResult;
   return (
     <Figure
       pieceIsBeingReplaced={false}
@@ -44,4 +42,4 @@ export const Pawn = ({ position, ...props }: Props) => {
   );
 };
 
-useGLTF.preload(`/pawn.gltf`);
+useGLTF.preload('/assets/figures/pawn.gltf');

@@ -1,10 +1,9 @@
 export const enum BoardTileType {
   White = 'white',
   Black = 'black',
-  Empty = 'empty',
 }
 
-export const enum BoardTileState {
+export const enum BoardTileStatus {
   Idle = 'idle',
   Occupied = 'occupied',
   Selected = 'selected',

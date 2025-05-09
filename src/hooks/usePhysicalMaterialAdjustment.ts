@@ -2,10 +2,8 @@ import { useControls } from 'leva';
 
 export function usePhysicalMaterialAdjustment() {
   return useControls({
-    whiteColor: { value: '#bebbb1' },
-    blackColor: { value: '#232323' },
-    emissive: { value: '#000000', disabled: true },
-    isSelected: false,
+    color: { value: '#232323' },
+    emissive: { value: '#000000', disabled: false },
     metalness: {
       value: 1,
       min: 0,

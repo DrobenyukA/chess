@@ -1,15 +1,15 @@
-import { Fragment, useCallback, useLayoutEffect, useState } from 'react';
+import { board as boardS } from '@app/store/board';
+import { BoardColumn, BoardRow } from '@app/types';
+import { Environment, Grid, OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import { Grid, OrbitControls, Environment } from '@react-three/drei';
 import get from 'lodash/get';
+import { Fragment, useCallback, useLayoutEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { BackSide } from 'three';
-
-import { createBoard } from '@app/services/board';
-import { BoardColumn, BoardRow, Board as BoardType } from '@app/types';
+import { degToRad } from 'three/src/math/MathUtils.js';
 
 import { Tile } from '../Tile';
 import { Light } from './Light';
-import { degToRad } from 'three/src/math/MathUtils.js';
 
 interface Props {
   mode?: 'game' | 'debug';
@@ -18,14 +18,11 @@ interface Props {
 
 interface State {
   isCameraEnabled: boolean;
-  board: BoardType;
 }
 
 export const Board = ({ mode = 'game', children }: Props) => {
-  const [state, setState] = useState<State>({
-    isCameraEnabled: true,
-    board: createBoard(),
-  });
+  const board = useSelector(boardS.selectors.getBoard);
+  const [state, setState] = useState<State>({ isCameraEnabled: true });
   const isDebugMode = mode === 'debug';
 
   const handleEnableCamera = useCallback(
@@ -51,7 +48,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
   return (
     <Canvas camera={{ position: [0, 8, 12], fov: 70 }}>
-      <axesHelper args={[5]} />
+      {isDebugMode && <axesHelper args={[5]} />}
 
       <Light />
 
@@ -64,13 +61,13 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
       {isDebugMode && <Grid position={[0, 0, 0]} infiniteGrid={true} cellColor="white" />}
 
-      {Object.keys(state.board).map((rowId: string) => (
+      {Object.keys(board).map((rowId: string) => (
         <Fragment key={rowId}>
-          {Object.keys(get(state.board, rowId, {} as BoardRow)).map((colId: string) => {
+          {Object.keys(get(board, rowId, {} as BoardRow)).map((colId: string) => {
             const colPath = `${rowId}.${colId}`;
-            const tile = get(state.board, colPath, {} as BoardColumn);
+            const tile = get(board, colPath, {} as BoardColumn);
 
-            return <Tile {...tile} />;
+            return <Tile key={colPath} {...tile} />;
           })}
         </Fragment>
       ))}
