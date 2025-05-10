@@ -1,5 +1,4 @@
 import { FigureType } from '@app/constants/figures';
-import { transformPositionToVector } from '@app/services/figures';
 import { useGLTF } from '@react-three/drei';
 import { useRef } from 'react';
 import type * as THREE from 'three';
@@ -16,10 +15,10 @@ type GLTFResult = GLTF & {
 
 interface Props {
   type: FigureType;
-  position: [number, number];
+  position: [number, number, number];
 }
 
-export const Bishop = ({ position, ...props }: Props) => {
+export const Bishop = (props: Props) => {
   const ref = useRef(null);
   const { nodes } = useGLTF('/assets/figures/bishop.gltf') as unknown as GLTFResult;
 
@@ -31,9 +30,8 @@ export const Bishop = ({ position, ...props }: Props) => {
       movingTo={null}
       finishMovingPiece={console.log}
       wasSelected={false}
-      position={transformPositionToVector(position)}
       scale={0.15}
-      rotation={[0, degToRad(props.type === FigureType.WHITE ? 215 : 35), 0]}
+      rotation={[0, degToRad(props.type === FigureType.WHITE ? 35 : 215), 0]}
       {...props}
     >
       <mesh ref={ref} attach="geometry" {...nodes.Object001002.geometry} />;
