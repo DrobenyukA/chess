@@ -1,8 +1,7 @@
 import { FigureName, FigureType } from '@app/constants/figures';
-import { Board, BoardPosition } from '@app/types';
+import { BoardPosition } from '@app/types';
 import { Figure } from '@app/types/figures';
 import { generateId } from '@app/utils/general';
-import get from 'lodash/get';
 
 const BASE_TILE_SIZE = 1;
 const FIGURE_ELEVATION = 0;
@@ -18,23 +17,14 @@ export const transformPositionToVector = ([x, y]: [number, number]): [number, nu
 ];
 
 export const convertPositionToVector = (
-  { row, col }: BoardPosition,
-  board: Board,
-): [number, number, number] => {
-  const [x, , z] = get(board, `${row}.${col}.position`, [0, FIGURE_ELEVATION, 0]) as [
-    number,
-    number,
-    number,
-  ];
-  return [x, FIGURE_ELEVATION, z];
-};
+  [x, , z]: [number, number, number],
+): [number, number, number] => [x, FIGURE_ELEVATION, z];
 
-const createFigure = (type: FigureType, name: FigureName, position: BoardPosition) => ({
+const createFigure = (type: FigureType, name: FigureName, initialPosition: BoardPosition): Figure => ({
   id: generateId(name),
-  isAlive: true,
-  isSelected: false,
+  isInBattle: true,
   name,
-  position,
+  initialPosition,
   type,
 });
 

@@ -2,13 +2,13 @@ import { FigureName, FigureType } from '@app/constants/figures';
 
 import { BoardPosition } from './board';
 
-export interface Figure {
+export interface BaseFigure {
   id: string;
-
-  isAlive: boolean;
-  isSelected: boolean;
-
+  isInBattle: boolean;
   name: FigureName;
-  position: BoardPosition;
   type: FigureType;
+}
+
+export interface Figure extends BaseFigure {
+  initialPosition: BoardPosition;
 }

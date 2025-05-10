@@ -6,7 +6,7 @@ import { JSX } from 'react';
 
 import { getTileColor, getTileEmissive } from '../utils';
 
-type Props = JSX.IntrinsicElements[`meshPhysicalMaterial`] & Omit<BoardColumn, 'position'>;
+type Props = JSX.IntrinsicElements[`meshPhysicalMaterial`] & Omit<BoardColumn, 'position' | 'boardPosition' | 'ocupiedBy'>;
 
 export const TileMaterial = ({ type, status, ...props }: Props) => {
   const { color } = useSpring({ color: getTileColor(type, status) });
