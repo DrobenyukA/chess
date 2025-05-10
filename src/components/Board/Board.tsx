@@ -20,6 +20,8 @@ interface State {
   isCameraEnabled: boolean;
 }
 
+// TODO: add frame with row and column names
+
 export const Board = ({ mode = 'game', children }: Props) => {
   const board = useSelector(boardS.selectors.getBoard);
   const [state, setState] = useState<State>({ isCameraEnabled: true });

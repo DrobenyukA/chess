@@ -16,12 +16,12 @@ export interface BoardPosition {
    * letters from a to h
    * @example 'a'
    */
-  x: BoardColumnName;
+  col: BoardColumnName;
   /**
    * numbers from 1 to 8
    * @example 1
    */
-  y: BoardRowName;
+  row: BoardRowName;
 }
 export type BoardRow = Record<BoardColumnName, BoardColumn>;
 export type Board = Record<BoardRowName, BoardRow>;

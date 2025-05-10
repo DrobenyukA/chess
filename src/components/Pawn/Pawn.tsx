@@ -1,5 +1,4 @@
 import { FigureType } from '@app/constants/figures';
-import { transformPositionToVector } from '@app/services/figures';
 import { useGLTF } from '@react-three/drei';
 import { useRef } from 'react';
 import type * as THREE from 'three';
@@ -18,10 +17,10 @@ type GLTFResult = GLTF & {
 
 interface Props {
   type: FigureType;
-  position: [number, number];
+  position: [number, number, number];
 }
 
-export const Pawn = ({ position, ...props }: Props) => {
+export const Pawn = (props: Props) => {
   const ref = useRef(null);
   const { nodes } = useGLTF('/assets/figures/pawn.gltf') as unknown as GLTFResult;
   return (
@@ -32,7 +31,6 @@ export const Pawn = ({ position, ...props }: Props) => {
       movingTo={null}
       finishMovingPiece={console.log}
       wasSelected={false}
-      position={transformPositionToVector(position)}
       scale={0.15}
       rotation={[0, 0, 0]}
       {...props}

@@ -1,11 +1,15 @@
 import './styles.css';
 
 import { BoardColumnName, BoardRowName, COLUMNS, ROWS } from '@app/constants/board';
-import { FigureType } from '@app/constants/figures';
+import { FigureName } from '@app/constants/figures';
+import { convertPositionToVector, createFigures } from '@app/services/figures';
 import { useActions, useStateMirroringEffect } from '@app/store';
 import { board } from '@app/store/board';
+import { figures } from '@app/store/figures';
 import { session } from '@app/store/session';
-import { useState } from 'react';
+import { createSelector } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Bishop } from '../Bishop';
 import { Board } from '../Board';
@@ -13,10 +17,19 @@ import { King } from '../King';
 import { Knight } from '../Knight';
 import { Pawn } from '../Pawn';
 import { Queen } from '../Queen';
-import { Rook } from '../Rook/Rook';
+import { Rook } from '../Rook';
 
+const selectState = createSelector(
+  board.selectors.getBoard,
+  figures.selectors.getFigures,
+  (board, figures) => ({
+    board,
+    figures,
+  }),
+);
 export const App = () => {
-  const [state, setState] = useState({ row: ROWS[0], col: COLUMNS[0] });
+  const [s, setState] = useState({ row: ROWS[0], col: COLUMNS[0] });
+  const state = useSelector(selectState);
   const actions = useActions({
     addPlayer: session.actions.addPlayer,
     setSelectedTile: board.actions.setSelectedTile,
@@ -40,7 +53,7 @@ export const App = () => {
     ]);
   };
   const handleSelect = () => {
-    actions.setSelectedTile(state);
+    actions.setSelectedTile(s);
   };
   const handleChangeStatuses = () => {
     actions.changeStatus({
@@ -56,6 +69,10 @@ export const App = () => {
       ],
     });
   };
+
+  useEffect(() => {
+    createFigures();
+  }, []);
 
   useStateMirroringEffect();
 
@@ -87,13 +104,63 @@ export const App = () => {
       </header>
       <main>
         <Board>
-          <Pawn position={[-4, -3]} type={FigureType.BLACK} />
-          <Pawn position={[-4, 3]} type={FigureType.WHITE} />
-          <Rook position={[-4, 4]} type={FigureType.WHITE} />
-          <Knight position={[-3, 4]} type={FigureType.WHITE} />
-          <Bishop position={[-2, 4]} type={FigureType.WHITE} />
-          <King position={[-1, 4]} type={FigureType.WHITE} />
-          <Queen position={[0, 4]} type={FigureType.WHITE} />
+          {state.figures.map((figure) => {
+            if (figure.name === FigureName.PAWN) {
+              return (
+                <Pawn
+                  key={figure.id}
+                  type={figure.type}
+                  position={convertPositionToVector(figure.position, state.board)}
+                />
+              );
+            }
+            if (figure.name === FigureName.ROOK) {
+              return (
+                <Rook
+                  key={figure.id}
+                  type={figure.type}
+                  position={convertPositionToVector(figure.position, state.board)}
+                />
+              );
+            }
+            if (figure.name === FigureName.KNIGHT) {
+              return (
+                <Knight
+                  key={figure.id}
+                  type={figure.type}
+                  position={convertPositionToVector(figure.position, state.board)}
+                />
+              );
+            }
+            if (figure.name === FigureName.BISHOP) {
+              return (
+                <Bishop
+                  key={figure.id}
+                  type={figure.type}
+                  position={convertPositionToVector(figure.position, state.board)}
+                />
+              );
+            }
+            if (figure.name === FigureName.QUEEN) {
+              return (
+                <Queen
+                  key={figure.id}
+                  type={figure.type}
+                  position={convertPositionToVector(figure.position, state.board)}
+                />
+              );
+            }
+            if (figure.name === FigureName.KING) {
+              return (
+                <King
+                  key={figure.id}
+                  type={figure.type}
+                  position={convertPositionToVector(figure.position, state.board)}
+                />
+              );
+            }
+            return null;
+          })}
         </Board>
       </main>
     </>
