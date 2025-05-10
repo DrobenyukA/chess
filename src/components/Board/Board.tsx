@@ -10,6 +10,8 @@ import { degToRad } from 'three/src/math/MathUtils.js';
 
 import { Tile } from '../Tile';
 import { Light } from './Light';
+import { useActions } from '@app/store';
+import { BoardFigure } from './Figure';
 
 interface Props {
   mode?: 'game' | 'debug';
@@ -25,7 +27,16 @@ interface State {
 export const Board = ({ mode = 'game', children }: Props) => {
   const board = useSelector(boardS.selectors.getBoard);
   const [state, setState] = useState<State>({ isCameraEnabled: true });
+  const actions = useActions({
+    setSelectedTile: boardS.actions.setSelectedTile,
+  });
+  
   const isDebugMode = mode === 'debug';
+
+  const handleTileClick = useCallback((tile: BoardColumn) => {
+    actions.setSelectedTile(tile.boardPosition);
+    console.log({ tile });
+  }, [actions]);
 
   const handleEnableCamera = useCallback(
     () => setState((prevState) => ({ ...prevState, isCameraEnabled: true })),
@@ -50,7 +61,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
   return (
     <Canvas camera={{ position: [0, 8, 12], fov: 70 }}>
-      {isDebugMode && <axesHelper args={[5]} />}
+      {<axesHelper args={[5]} />}
 
       <Light />
 
@@ -66,10 +77,19 @@ export const Board = ({ mode = 'game', children }: Props) => {
       {Object.keys(board).map((rowId: string) => (
         <Fragment key={rowId}>
           {Object.keys(get(board, rowId, {} as BoardRow)).map((colId: string) => {
-            const colPath = `${rowId}.${colId}`;
-            const tile = get(board, colPath, {} as BoardColumn);
+            const path = `${rowId}.${colId}`;
+            const tile = get(board, path, {} as BoardColumn);
 
-            return <Tile key={colPath} {...tile} />;
+            if (tile.ocupiedBy) {
+              return (
+                <Fragment key={path}>
+                  <BoardFigure {...tile.ocupiedBy} />
+                  <Tile key={path} {...tile} onClick={handleTileClick} />
+                </Fragment>
+              );
+            }
+
+            return <Tile key={path} {...tile} onClick={handleTileClick} />;
           })}
         </Fragment>
       ))}

@@ -1,20 +1,17 @@
-import { BoardColumnName, BoardRowName, BoardTileStatus } from '@app/constants';
-import { createBoard, modifyBoard } from '@app/services/board';
+import { BoardTileStatus } from '@app/constants';
+import { createBoardWithFigures, modifyBoard } from '@app/services/board';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BoardPosition } from '@app/types/board';
 
 import { getInitialState } from './utils';
 
-interface TilePosition {
-  row: BoardRowName;
-  col: BoardColumnName;
-}
 
 export const board = createSlice({
   name: 'board',
-  initialState: getInitialState('board', createBoard()),
+  initialState: getInitialState('board', createBoardWithFigures()),
 
   reducers: {
-    setSelectedTile: (state, { payload }: PayloadAction<TilePosition>) => {
+    setSelectedTile: (state, { payload }: PayloadAction<BoardPosition>) => {
       const { row, col } = payload;
 
       modifyBoard(state, (column) => {
@@ -30,8 +27,8 @@ export const board = createSlice({
       {
         payload,
       }: PayloadAction<{
-        [BoardTileStatus.Highlighted]: Array<TilePosition>;
-        [BoardTileStatus.Threat]: Array<TilePosition>;
+        [BoardTileStatus.Highlighted]: Array<BoardPosition>;
+        [BoardTileStatus.Threat]: Array<BoardPosition>;
       }>,
     ) => {
       modifyBoard(state, (column) => {
@@ -51,7 +48,7 @@ export const board = createSlice({
       });
     },
 
-    highlightTiles: (state, { payload }: PayloadAction<Array<TilePosition>>) => {
+    highlightTiles: (state, { payload }: PayloadAction<Array<BoardPosition>>) => {
       modifyBoard(state, (column) => {
         if (column.status === BoardTileStatus.Highlighted) {
           column.status = BoardTileStatus.Idle;
@@ -62,7 +59,8 @@ export const board = createSlice({
         state[row][col].status = BoardTileStatus.Highlighted;
       });
     },
-    setThreatStatus: (state, { payload }: PayloadAction<Array<TilePosition>>) => {
+
+    setThreatStatus: (state, { payload }: PayloadAction<Array<BoardPosition>>) => {
       modifyBoard(state, (column) => {
         if (column.status === BoardTileStatus.Threat) {
           column.status = BoardTileStatus.Idle;
