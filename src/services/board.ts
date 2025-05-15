@@ -1,6 +1,7 @@
 import { BoardTileStatus, BoardTileType, COLUMNS, ROWS } from '@app/constants';
 import { Board, BoardColumn, BoardPosition, BoardRow } from '@app/types';
 import get from 'lodash/get';
+
 import { convertPositionToVector, createFigures } from './figures';
 
 const getType = (row: number, col: number) => {
@@ -20,7 +21,7 @@ const Z_AXIS_OFFSET = 3.5;
 const createBoardTile = (row: number, col: number) => ({
   type: getType(row, col),
   status: BoardTileStatus.Idle,
-  ocupiedBy: null,
+  occupiedBy: null,
   boardPosition: {
     row: ROWS[row],
     col: COLUMNS[col],
@@ -47,20 +48,18 @@ const createBoard = () =>
 export const createBoardWithFigures = (): Board => {
   const board = createBoard();
   const figures = createFigures();
-  
+
   figures.forEach(({ initialPosition, ...figure }) => {
     if (initialPosition?.row && initialPosition.col) {
-      board[initialPosition.row][initialPosition.col].ocupiedBy = {
+      board[initialPosition.row][initialPosition.col].occupiedBy = {
         ...figure,
-        position: convertPositionToVector(board[initialPosition.row][initialPosition.col].position)
+        position: convertPositionToVector(board[initialPosition.row][initialPosition.col].position),
       };
     }
   });
 
   return board;
-}
-
-
+};
 
 export const modifyBoard = (board: Board, action: (column: BoardColumn) => void) => {
   Object.keys(board).forEach((r) => {

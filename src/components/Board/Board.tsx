@@ -80,10 +80,10 @@ export const Board = ({ mode = 'game', children }: Props) => {
             const path = `${rowId}.${colId}`;
             const tile = get(board, path, {} as BoardColumn);
 
-            if (tile.ocupiedBy) {
+            if (tile.occupiedBy) {
               return (
                 <Fragment key={path}>
-                  <BoardFigure {...tile.ocupiedBy} />
+                  <BoardFigure {...tile.occupiedBy} />
                   <Tile key={path} {...tile} onClick={handleTileClick} />
                 </Fragment>
               );
