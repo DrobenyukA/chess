@@ -1,4 +1,10 @@
-import { BoardColumnName, BoardRowName, BoardTileStatus, BoardTileType } from '@app/constants';
+import {
+  BoardColumnName,
+  BoardRowName,
+  BoardSides,
+  BoardTileStatus,
+  BoardTileType,
+} from '@app/constants';
 
 import { BaseFigure } from './figures';
 
@@ -33,4 +39,11 @@ export interface BoardColumn {
 }
 
 export type BoardRow = Record<BoardColumnName, BoardColumn>;
+
+export interface FrameItem {
+  text?: string;
+  side: BoardSides;
+  position: [number, number, number];
+}
+
 export type Board = Record<BoardRowName, BoardRow>;

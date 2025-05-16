@@ -5,13 +5,13 @@ import { useSelector } from 'react-redux';
 
 import { board } from './board';
 import { SNAPSHOT } from './constants';
-import { figures } from './figures';
+import { eliminatedFigures } from './eliminatedFigures';
 import { session } from './session';
 
 export const store = configureStore({
   reducer: {
     [board.name]: board.reducer,
-    [figures.name]: figures.reducer,
+    [eliminatedFigures.name]: eliminatedFigures.reducer,
     [session.name]: session.reducer,
   },
 

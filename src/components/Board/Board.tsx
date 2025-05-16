@@ -1,3 +1,5 @@
+import { FigureType } from '@app/constants/figures';
+import { useActions } from '@app/store';
 import { board as boardS } from '@app/store/board';
 import { BoardColumn, BoardRow } from '@app/types';
 import { Environment, Grid, OrbitControls } from '@react-three/drei';
@@ -9,12 +11,13 @@ import { BackSide } from 'three';
 import { degToRad } from 'three/src/math/MathUtils.js';
 
 import { Tile } from '../Tile';
-import { Light } from './Light';
-import { useActions } from '@app/store';
+import { settings } from './constants';
 import { BoardFigure } from './Figure';
+import { BoardFrame } from './Frame';
+import { Light } from './Light';
 
 interface Props {
-  mode?: 'game' | 'debug';
+  mode?: 'game' | 'debug' | 'alignment';
   children?: React.ReactNode;
 }
 
@@ -30,13 +33,17 @@ export const Board = ({ mode = 'game', children }: Props) => {
   const actions = useActions({
     setSelectedTile: boardS.actions.setSelectedTile,
   });
-  
-  const isDebugMode = mode === 'debug';
 
-  const handleTileClick = useCallback((tile: BoardColumn) => {
-    actions.setSelectedTile(tile.boardPosition);
-    console.log({ tile });
-  }, [actions]);
+  const isDebugMode = mode === 'debug';
+  const isAlignmentMode = mode === 'alignment';
+
+  const handleTileClick = useCallback(
+    (tile: BoardColumn) => {
+      actions.setSelectedTile(tile.boardPosition);
+      console.log({ tile });
+    },
+    [actions],
+  );
 
   const handleEnableCamera = useCallback(
     () => setState((prevState) => ({ ...prevState, isCameraEnabled: true })),
@@ -60,8 +67,8 @@ export const Board = ({ mode = 'game', children }: Props) => {
   }, []);
 
   return (
-    <Canvas camera={{ position: [0, 8, 12], fov: 70 }}>
-      {<axesHelper args={[5]} />}
+    <Canvas camera={settings.camera[FigureType.WHITE]} shadows>
+      {isAlignmentMode && <axesHelper args={[5]} />}
 
       <Light />
 
@@ -94,18 +101,26 @@ export const Board = ({ mode = 'game', children }: Props) => {
         </Fragment>
       ))}
 
-      <OrbitControls
-        maxDistance={25}
-        minDistance={10}
-        enableZoom={false}
-        minPolarAngle={degToRad(25)}
-        maxPolarAngle={degToRad(65)}
-        minAzimuthAngle={degToRad(-90)}
-        maxAzimuthAngle={degToRad(90)}
-        // enableRotate={false}
-        enablePan={false}
-        enabled={state.isCameraEnabled}
-      />
+      <BoardFrame board={board} />
+
+      {isAlignmentMode && (
+        <OrbitControls maxDistance={25} minDistance={10} enabled={state.isCameraEnabled} />
+      )}
+
+      {!isAlignmentMode && (
+        <OrbitControls
+          maxDistance={25}
+          minDistance={10}
+          enableZoom={false}
+          minPolarAngle={degToRad(25)}
+          maxPolarAngle={degToRad(65)}
+          minAzimuthAngle={settings.orbitControls[FigureType.WHITE].minAzimuthAngle}
+          maxAzimuthAngle={settings.orbitControls[FigureType.WHITE].maxAzimuthAngle}
+          // enableRotate={false}
+          enablePan={false}
+          enabled={state.isCameraEnabled}
+        />
+      )}
 
       {children}
     </Canvas>
