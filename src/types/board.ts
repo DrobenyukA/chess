@@ -1,4 +1,11 @@
-import { BoardColumnName, BoardRowName, BoardTileStatus, BoardTileType } from '@app/constants';
+import {
+  BoardColumnName,
+  BoardRowName,
+  BoardSides,
+  BoardTileStatus,
+  BoardTileType,
+} from '@app/constants';
+
 import { BaseFigure } from './figures';
 
 export interface BoardFigure extends BaseFigure {
@@ -21,15 +28,22 @@ export interface BoardPosition {
 export interface BoardColumn {
   status: BoardTileStatus;
   type: BoardTileType;
-  ocupiedBy: BoardFigure|null;
+  occupiedBy: BoardFigure | null;
   /**
    * position in 3D space [x, y, z]
    * @example [0, 0, 0]
    * @description x and z are the same as the column and row names, y is the height of the tile
-  */
+   */
   position: [number, number, number];
-  boardPosition: BoardPosition
+  boardPosition: BoardPosition;
 }
 
 export type BoardRow = Record<BoardColumnName, BoardColumn>;
+
+export interface FrameItem {
+  text?: string;
+  side: BoardSides;
+  position: [number, number, number];
+}
+
 export type Board = Record<BoardRowName, BoardRow>;

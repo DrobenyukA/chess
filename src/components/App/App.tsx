@@ -4,10 +4,9 @@ import { BoardColumnName, BoardRowName, COLUMNS, ROWS } from '@app/constants/boa
 import { useActions, useStateMirroringEffect } from '@app/store';
 import { board } from '@app/store/board';
 import { session } from '@app/store/session';
-
 import { useState } from 'react';
-import { Board } from '../Board';
 
+import { Board } from '../Board';
 
 export const App = () => {
   const [s, setState] = useState({ row: ROWS[0], col: COLUMNS[0] });

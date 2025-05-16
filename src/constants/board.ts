@@ -11,6 +11,17 @@ export const enum BoardTileStatus {
   Threat = 'threat',
 }
 
+export const enum BoardSides {
+  Top = 'top',
+  TopRight = 'top-right',
+  Right = 'right',
+  BottomRight = 'right-bottom',
+  Bottom = 'bottom',
+  BottomLeft = 'bottom-left',
+  Left = 'left',
+  TopLeft = 'top-left',
+}
+
 const COLUMN_A = 'a' as const;
 const COLUMN_B = 'b' as const;
 const COLUMN_C = 'c' as const;
