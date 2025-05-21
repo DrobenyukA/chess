@@ -1,10 +1,9 @@
 import { BoardTileStatus } from '@app/constants';
 import { createBoardWithFigures, modifyBoard } from '@app/services/board';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BoardPosition } from '@app/types/board';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { getInitialState } from './utils';
-
 
 export const board = createSlice({
   name: 'board',

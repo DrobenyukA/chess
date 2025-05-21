@@ -1,4 +1,5 @@
-import { FigureName, FigureType } from '@app/constants/figures';
+import { FigureName } from '@app/constants/figures';
+import { PlayerTeam } from '@app/constants/players';
 
 import { BoardPosition } from './board';
 
@@ -6,7 +7,7 @@ export interface BaseFigure {
   id: string;
   isInBattle: boolean;
   name: FigureName;
-  type: FigureType;
+  team: PlayerTeam;
 }
 
 export interface Figure extends BaseFigure {

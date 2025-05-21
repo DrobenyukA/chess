@@ -1,36 +1,35 @@
-import { JSX } from 'react';
+import { PlayerTeam } from '@app/constants/players';
 import { animated, useSpring } from '@react-spring/three';
-
-import { FigureType } from '@app/constants/figures';
+import { JSX } from 'react';
 
 type Props = JSX.IntrinsicElements[`meshPhysicalMaterial`] & {
-  type: FigureType;
+  team: PlayerTeam;
   isSelected: boolean;
   pieceIsBeingReplaced: boolean;
 };
 
-function getColor(type: FigureType) {
-  return type === FigureType.WHITE ? '#bebbb1' : '#232323';
+function getColor(team: PlayerTeam) {
+  return team === PlayerTeam.WHITE ? '#bebbb1' : '#232323';
 }
 
-function getEmissiveColor(type: FigureType, isSelected: boolean) {
+function getEmissiveColor(team: PlayerTeam, isSelected: boolean) {
   if (isSelected) {
-    return type === FigureType.WHITE ? '#158608' : '#293b27';
+    return team === PlayerTeam.WHITE ? '#158608' : '#293b27';
   }
   return '#232323';
 }
 
-export const FigureMaterial = ({ type, isSelected, pieceIsBeingReplaced, ...props }: Props) => {
+export const FigureMaterial = ({ team, isSelected, pieceIsBeingReplaced, ...props }: Props) => {
   const { opacity } = useSpring({ opacity: pieceIsBeingReplaced ? 0 : 1 });
 
   return (
     <animated.meshPhysicalMaterial
       attach="material"
-      color={getColor(type)}
+      color={getColor(team)}
       clearcoat={0.7}
       clearcoatIntensity={0.5}
       clearcoatRoughness={0.5}
-      emissive={getEmissiveColor(type, isSelected)}
+      emissive={getEmissiveColor(team, isSelected)}
       roughness={0.4}
       ior={1.5}
       iridescence={0.15}

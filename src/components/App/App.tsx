@@ -79,7 +79,7 @@ export const App = () => {
         </div>
       </header>
       <main>
-        <Board />
+        <Board mode="alignment" />
       </main>
     </>
   );

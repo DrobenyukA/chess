@@ -1,3 +1,4 @@
+import { PlayerTeam } from '@app/constants/players';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { getInitialState } from './utils';
@@ -5,8 +6,11 @@ import { getInitialState } from './utils';
 export const session = createSlice({
   name: 'session',
   initialState: getInitialState('session', {
-    players: [],
-    currentPlayer: null,
+    players: [
+      { id: PlayerTeam.WHITE, name: 'John Doe', team: PlayerTeam.WHITE },
+      { id: PlayerTeam.BLACK, name: 'Jane Paine', team: PlayerTeam.BLACK },
+    ],
+    currentPlayer: { id: PlayerTeam.WHITE, name: 'John Doe', team: PlayerTeam.WHITE },
   }),
 
   reducers: {

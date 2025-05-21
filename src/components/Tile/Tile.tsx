@@ -9,7 +9,15 @@ type Props = JSX.IntrinsicElements[`mesh`] &
     onClick: (tile: BoardColumn) => void;
   };
 
-export const Tile = ({ type, status, occupiedBy, boardPosition, onClick, ...props }: Props) => {
+export const Tile = ({
+  type,
+  status,
+  occupiedBy,
+  boardPosition,
+  children,
+  onClick,
+  ...props
+}: Props) => {
   const handleClick = useCallback(() => {
     if (isFunction(onClick)) {
       onClick({
@@ -26,6 +34,7 @@ export const Tile = ({ type, status, occupiedBy, boardPosition, onClick, ...prop
     <mesh scale={[1, -0.25, 1]} receiveShadow castShadow onClick={handleClick} {...props}>
       <boxGeometry />
       <TileMaterial type={type} status={status} />
+      {children}
     </mesh>
   );
 };

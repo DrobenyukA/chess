@@ -1,4 +1,5 @@
-import { FigureType } from '@app/constants/figures';
+import { PlayerTeam } from '@app/constants/players';
+import { CommonFigureProps } from '@app/types/general';
 import { useGLTF } from '@react-three/drei';
 import { useRef } from 'react';
 import type * as THREE from 'three';
@@ -15,8 +16,8 @@ type GLTFResult = GLTF & {
   };
 };
 
-interface Props {
-  type: FigureType;
+interface Props extends CommonFigureProps {
+  team: PlayerTeam;
   position: [number, number, number];
 }
 
@@ -26,7 +27,6 @@ export const Pawn = (props: Props) => {
   return (
     <Figure
       pieceIsBeingReplaced={false}
-      isSelected={false}
       canMoveHere={null}
       movingTo={null}
       finishMovingPiece={console.log}

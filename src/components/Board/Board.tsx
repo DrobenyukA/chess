@@ -1,6 +1,8 @@
-import { FigureType } from '@app/constants/figures';
+import { PlayerTeam } from '@app/constants/players';
 import { useActions } from '@app/store';
 import { board as boardS } from '@app/store/board';
+import { figures as figuresS } from '@app/store/figures';
+import { session as sessionS } from '@app/store/session';
 import { BoardColumn, BoardRow } from '@app/types';
 import { Environment, Grid, OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
@@ -29,9 +31,11 @@ interface State {
 
 export const Board = ({ mode = 'game', children }: Props) => {
   const board = useSelector(boardS.selectors.getBoard);
+  const currentPlayer = useSelector(sessionS.selectors.getSessionCurrentPlayer);
   const [state, setState] = useState<State>({ isCameraEnabled: true });
   const actions = useActions({
     setSelectedTile: boardS.actions.setSelectedTile,
+    setSelectedFigure: figuresS.actions.setSelectedFigure,
   });
 
   const isDebugMode = mode === 'debug';
@@ -39,8 +43,10 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
   const handleTileClick = useCallback(
     (tile: BoardColumn) => {
-      actions.setSelectedTile(tile.boardPosition);
-      console.log({ tile });
+      if (tile.occupiedBy && tile.occupiedBy.team === currentPlayer.team) {
+        actions.setSelectedTile(tile.boardPosition);
+        actions.setSelectedFigure({ ...tile.occupiedBy, initialPosition: tile.boardPosition });
+      }
     },
     [actions],
   );
@@ -49,6 +55,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
     () => setState((prevState) => ({ ...prevState, isCameraEnabled: true })),
     [],
   );
+
   const handleDisableCamera = useCallback(
     () => setState((prevState) => ({ ...prevState, isCameraEnabled: false })),
     [],
@@ -67,7 +74,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
   }, []);
 
   return (
-    <Canvas camera={settings.camera[FigureType.WHITE]} shadows>
+    <Canvas camera={settings.camera[PlayerTeam.WHITE]} shadows>
       {isAlignmentMode && <axesHelper args={[5]} />}
 
       <Light />
@@ -83,16 +90,16 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
       {Object.keys(board).map((rowId: string) => (
         <Fragment key={rowId}>
-          {Object.keys(get(board, rowId, {} as BoardRow)).map((colId: string) => {
+          {Object.keys(get(board, rowId, {} as BoardRow) || []).map((colId: string) => {
             const path = `${rowId}.${colId}`;
             const tile = get(board, path, {} as BoardColumn);
 
             if (tile.occupiedBy) {
               return (
-                <Fragment key={path}>
+                <group key={path}>
                   <BoardFigure {...tile.occupiedBy} />
                   <Tile key={path} {...tile} onClick={handleTileClick} />
-                </Fragment>
+                </group>
               );
             }
 
@@ -109,16 +116,15 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
       {!isAlignmentMode && (
         <OrbitControls
+          enabled={state.isCameraEnabled}
+          enablePan={false}
+          enableZoom={false}
           maxDistance={25}
           minDistance={10}
-          enableZoom={false}
-          minPolarAngle={degToRad(25)}
           maxPolarAngle={degToRad(65)}
-          minAzimuthAngle={settings.orbitControls[FigureType.WHITE].minAzimuthAngle}
-          maxAzimuthAngle={settings.orbitControls[FigureType.WHITE].maxAzimuthAngle}
-          // enableRotate={false}
-          enablePan={false}
-          enabled={state.isCameraEnabled}
+          minPolarAngle={degToRad(25)}
+          maxAzimuthAngle={settings.orbitControls[PlayerTeam.WHITE].maxAzimuthAngle}
+          minAzimuthAngle={settings.orbitControls[PlayerTeam.WHITE].minAzimuthAngle}
         />
       )}
 
