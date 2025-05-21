@@ -271,6 +271,19 @@ export const getNextRowColPosition = ({ row, col }: BoardPosition) => {
   return null;
 };
 
+export const getNextRowPrevColPosition = ({ row, col }: BoardPosition) => {
+  const nextRowPosition = getNextRowPosition({ row, col });
+  const prevColPosition = getPreviousColumnsPosition({ row, col });
+
+  if (nextRowPosition && prevColPosition) {
+    return {
+      col: prevColPosition.col,
+      row: nextRowPosition.row,
+    };
+  }
+  return null;
+};
+
 export const getPreviousRowPosition = ({ row, col }: BoardPosition) => {
   const rowIndex = ROWS.indexOf(row);
   const previousRowIndex = rowIndex - 1;
@@ -305,6 +318,19 @@ export const getPreviousRowColPosition = ({ row, col }: BoardPosition) => {
   if (previousRowPosition && previousColPosition) {
     return {
       col: previousColPosition.col,
+      row: previousRowPosition.row,
+    };
+  }
+  return null;
+};
+
+export const getPreviousRowNextColPosition = ({ row, col }: BoardPosition) => {
+  const previousRowPosition = getPreviousRowPosition({ row, col });
+  const nextColPosition = getNextColumnsPosition({ row, col });
+
+  if (previousRowPosition && nextColPosition) {
+    return {
+      col: nextColPosition.col,
       row: previousRowPosition.row,
     };
   }

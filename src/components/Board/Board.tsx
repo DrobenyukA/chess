@@ -1,11 +1,14 @@
+import { BoardTileStatus } from '@app/constants';
 import { PlayerTeam } from '@app/constants/players';
 import { useActions } from '@app/store';
-import { board as boardS } from '@app/store/board';
-import { figures as figuresS } from '@app/store/figures';
-import { session as sessionS } from '@app/store/session';
+import { board } from '@app/store/board';
+import { figures } from '@app/store/figures';
+import { moves } from '@app/store/moves';
+import { session } from '@app/store/session';
 import { BoardColumn, BoardRow } from '@app/types';
 import { Environment, Grid, OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { createSelector } from '@reduxjs/toolkit';
 import get from 'lodash/get';
 import { Fragment, useCallback, useLayoutEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -27,15 +30,25 @@ interface State {
   isCameraEnabled: boolean;
 }
 
-export const Board = ({ mode = 'game', children }: Props) => {
-  const board = useSelector(boardS.selectors.getBoard);
-  const selectedFigure = useSelector(figuresS.selectors.getSelectedFigure);
-  const currentPlayer = useSelector(sessionS.selectors.getSessionCurrentPlayer);
+const selectState = createSelector(
+  board.selectors.getBoard,
+  figures.selectors.getSelectedFigure,
+  session.selectors.getSessionCurrentPlayer,
+  (board, selectedFigure, currentPlayer) => ({
+    board,
+    selectedFigure,
+    currentPlayer,
+  }),
+);
 
+export const Board = ({ mode = 'game', children }: Props) => {
   const [state, setState] = useState<State>({ isCameraEnabled: true });
+  const store = useSelector(selectState);
   const actions = useActions({
-    setSelectedTile: boardS.actions.setSelectedTile,
-    setSelectedFigure: figuresS.actions.setSelectedFigure,
+    setSelectedTile: board.actions.setSelectedTile,
+    setSelectedFigure: figures.actions.setSelectedFigure,
+    storeMove: moves.actions.storeMove,
+    eliminateFigure: figures.actions.eliminateFigure,
   });
 
   const isDebugMode = mode === 'debug';
@@ -43,12 +56,38 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
   const handleTileClick = useCallback(
     (tile: BoardColumn) => {
-      if (tile.occupiedBy && tile.occupiedBy.team === currentPlayer.team) {
+      if (tile.occupiedBy && tile.occupiedBy.team === store.currentPlayer.team) {
         actions.setSelectedTile(tile.boardPosition);
         actions.setSelectedFigure({ ...tile.occupiedBy, initialPosition: tile.boardPosition });
+        return;
+      }
+
+      if (
+        tile.occupiedBy &&
+        tile.occupiedBy.team !== store.currentPlayer.team &&
+        store.selectedFigure
+      ) {
+        actions.eliminateFigure({ ...tile.occupiedBy, initialPosition: tile.boardPosition });
+        actions.storeMove({
+          from: store.selectedFigure?.initialPosition,
+          to: tile.boardPosition,
+          figure: store.selectedFigure,
+        });
+        actions.setSelectedFigure(null);
+        return;
+      }
+
+      if (tile.status === BoardTileStatus.Highlighted && store.selectedFigure) {
+        actions.storeMove({
+          from: store.selectedFigure?.initialPosition,
+          to: tile.boardPosition,
+          figure: store.selectedFigure,
+        });
+        actions.setSelectedFigure(null);
+        return;
       }
     },
-    [actions, currentPlayer.team],
+    [actions, store.currentPlayer.team, store.selectedFigure],
   );
 
   const handleEnableCamera = useCallback(
@@ -88,11 +127,11 @@ export const Board = ({ mode = 'game', children }: Props) => {
 
       {isDebugMode && <Grid position={[0, 0, 0]} infiniteGrid={true} cellColor="white" />}
 
-      {Object.keys(board).map((rowId: string) => (
+      {Object.keys(store.board).map((rowId: string) => (
         <Fragment key={rowId}>
-          {Object.keys(get(board, rowId, {} as BoardRow) || []).map((colId: string) => {
+          {Object.keys(get(store.board, rowId, {} as BoardRow) || []).map((colId: string) => {
             const path = `${rowId}.${colId}`;
-            const tile = get(board, path, {} as BoardColumn);
+            const tile = get(store.board, path, {} as BoardColumn);
 
             if (tile.occupiedBy) {
               return (
@@ -100,7 +139,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
                   <BoardFigure
                     {...tile.occupiedBy}
                     boardPosition={tile.boardPosition}
-                    isSelected={tile.occupiedBy.id === selectedFigure?.id}
+                    isSelected={tile.occupiedBy.id === store.selectedFigure?.id}
                   />
                   <Tile key={path} {...tile} onClick={handleTileClick} />
                 </group>
@@ -112,7 +151,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
         </Fragment>
       ))}
 
-      <BoardFrame board={board} />
+      <BoardFrame board={store.board} />
 
       {isAlignmentMode && (
         <OrbitControls maxDistance={25} minDistance={10} enabled={state.isCameraEnabled} />

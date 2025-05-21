@@ -35,20 +35,6 @@ export const App = () => {
   const handleSelect = () => {
     actions.setSelectedTile(s);
   };
-  const handleChangeStatuses = () => {
-    actions.changeStatus({
-      highlighted: [
-        { row: 2, col: 'c' },
-        { row: 2, col: 'd' },
-        { row: 2, col: 'e' },
-      ],
-      threat: [
-        { row: 5, col: 'f' },
-        { row: 5, col: 'g' },
-        { row: 5, col: 'h' },
-      ],
-    });
-  };
 
   const handleChangeTeam = () => actions.changePlayer();
 
@@ -74,7 +60,6 @@ export const App = () => {
           </select>
           <button onClick={handleHighlight}>Highlight</button>
           <button onClick={handleSelect}>Select</button>
-          <button onClick={handleChangeStatuses}>Change</button>
         </div>
         <div>
           <button onClick={handleChangeTeam}>Change team</button>

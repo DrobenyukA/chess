@@ -12,6 +12,9 @@ export const figures = createSlice({
     setSelectedFigure: (state, action: PayloadAction<Figure | null>) => {
       state.selected = action.payload;
     },
+    eliminateFigure: (state, action: PayloadAction<Figure>) => {
+      state.eliminated.push(action.payload);
+    },
   },
 
   selectors: {

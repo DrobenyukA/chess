@@ -1,8 +1,11 @@
 import { BoardTileStatus } from '@app/constants';
 import { createBoardWithFigures, modifyBoard } from '@app/services/board';
-import { BoardPosition } from '@app/types/board';
+import { BoardFigure, BoardPosition } from '@app/types/board';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import omit from 'lodash/omit';
 
+import { figures } from './figures';
+import { moves } from './moves';
 import { getInitialState } from './utils';
 
 export const board = createSlice({
@@ -74,6 +77,34 @@ export const board = createSlice({
 
   selectors: {
     getBoard: (state) => state,
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(moves.actions.storeMove, (state, { payload }) => {
+      const { from, to, figure } = payload;
+      const boardFigure = omit(figure, 'initialPosition') as BoardFigure;
+
+      state[from.row][from.col].status = BoardTileStatus.Idle;
+      state[from.row][from.col].occupiedBy = null;
+
+      state[to.row][to.col].status = BoardTileStatus.Idle;
+      state[to.row][to.col].occupiedBy = {
+        ...boardFigure,
+        position: state[to.row][to.col].position,
+      };
+    });
+    builder.addCase(figures.actions.setSelectedFigure, (state, { payload }) => {
+      if (!payload) {
+        modifyBoard(state, (column) => {
+          if (column.status === BoardTileStatus.Highlighted) {
+            column.status = BoardTileStatus.Idle;
+          }
+          if (column.status === BoardTileStatus.Threat) {
+            column.status = BoardTileStatus.Idle;
+          }
+        });
+      }
+    });
   },
 });
 
