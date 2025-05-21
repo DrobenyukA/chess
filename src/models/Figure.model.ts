@@ -2,6 +2,7 @@ import { PlayerTeam } from '@app/constants/players';
 import {
   getNextRowColPosition,
   getNextRowPosition,
+  getNextRowPrevColPosition,
   getPreviousRowColPosition,
   getPreviousRowPosition,
 } from '@app/services/board';
@@ -28,8 +29,8 @@ export class Figure {
 
   public getFrontLeftTargetPosition() {
     return this.team === PlayerTeam.WHITE
-      ? getPreviousRowColPosition(this.position)
-      : getNextRowColPosition(this.position);
+      ? getNextRowPrevColPosition(this.position)
+      : getPreviousRowColPosition(this.position);
   }
 
   public getFrontRightTargetPosition() {

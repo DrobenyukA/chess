@@ -4,7 +4,6 @@ import { useActions } from '@app/store';
 import { board as boardS } from '@app/store/board';
 import { CommonFigureProps } from '@app/types/general';
 import { useGLTF } from '@react-three/drei';
-import { b } from 'framer-motion/client';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import type * as THREE from 'three';
@@ -44,6 +43,8 @@ export const Pawn = ({ id, boardPosition, ...props }: Props) => {
       actions.highlightTiles(moves);
       actions.setThreatStatus(beats);
     }
+    // Disabled because we are interested in `isSelected` prop changes only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.isSelected]);
 
   return (
