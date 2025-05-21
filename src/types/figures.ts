@@ -1,7 +1,7 @@
 import { FigureName } from '@app/constants/figures';
 import { PlayerTeam } from '@app/constants/players';
 
-import { BoardPosition } from './board';
+import { Board, BoardPosition } from './board';
 
 export interface BaseFigure {
   id: string;
@@ -12,4 +12,14 @@ export interface BaseFigure {
 
 export interface Figure extends BaseFigure {
   initialPosition: BoardPosition;
+}
+
+export interface FigureActions {
+  moves: BoardPosition[];
+  beats: BoardPosition[];
+}
+
+export interface FigureModel {
+  position: BoardPosition;
+  getPossibleActions: (board: Board) => FigureActions;
 }

@@ -8,26 +8,26 @@ import { FigureName } from '@app/constants/figures';
 import { BoardFigure as IBoardFigure } from '@app/types/board';
 import { CommonFigureProps } from '@app/types/general';
 
-type Props = IBoardFigure & Partial<CommonFigureProps>;
+type Props = IBoardFigure & CommonFigureProps;
 
-export const BoardFigure = ({ id, name, team, position, isSelected = false }: Props) => {
+export const BoardFigure = ({ name, ...props }: Props) => {
   if (name === FigureName.PAWN) {
-    return <Pawn key={id} team={team} position={position} isSelected={isSelected} />;
+    return <Pawn key={props.id} {...props} />;
   }
   if (name === FigureName.ROOK) {
-    return <Rook key={id} team={team} position={position} isSelected={isSelected} />;
+    return <Rook key={props.id} {...props} />;
   }
   if (name === FigureName.KNIGHT) {
-    return <Knight key={id} team={team} position={position} isSelected={isSelected} />;
+    return <Knight key={props.id} {...props} />;
   }
   if (name === FigureName.BISHOP) {
-    return <Bishop key={id} team={team} position={position} isSelected={isSelected} />;
+    return <Bishop key={props.id} {...props} />;
   }
   if (name === FigureName.QUEEN) {
-    return <Queen key={id} team={team} position={position} isSelected={isSelected} />;
+    return <Queen key={props.id} {...props} />;
   }
   if (name === FigureName.KING) {
-    return <King key={id} team={team} position={position} isSelected={isSelected} />;
+    return <King key={props.id} {...props} />;
   }
   return null;
 };

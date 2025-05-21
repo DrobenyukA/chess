@@ -27,11 +27,11 @@ interface State {
   isCameraEnabled: boolean;
 }
 
-// TODO: add frame with row and column names
-
 export const Board = ({ mode = 'game', children }: Props) => {
   const board = useSelector(boardS.selectors.getBoard);
+  const selectedFigure = useSelector(figuresS.selectors.getSelectedFigure);
   const currentPlayer = useSelector(sessionS.selectors.getSessionCurrentPlayer);
+
   const [state, setState] = useState<State>({ isCameraEnabled: true });
   const actions = useActions({
     setSelectedTile: boardS.actions.setSelectedTile,
@@ -48,7 +48,7 @@ export const Board = ({ mode = 'game', children }: Props) => {
         actions.setSelectedFigure({ ...tile.occupiedBy, initialPosition: tile.boardPosition });
       }
     },
-    [actions],
+    [actions, currentPlayer.team],
   );
 
   const handleEnableCamera = useCallback(
@@ -97,7 +97,11 @@ export const Board = ({ mode = 'game', children }: Props) => {
             if (tile.occupiedBy) {
               return (
                 <group key={path}>
-                  <BoardFigure {...tile.occupiedBy} />
+                  <BoardFigure
+                    {...tile.occupiedBy}
+                    boardPosition={tile.boardPosition}
+                    isSelected={tile.occupiedBy.id === selectedFigure?.id}
+                  />
                   <Tile key={path} {...tile} onClick={handleTileClick} />
                 </group>
               );

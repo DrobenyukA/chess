@@ -14,7 +14,9 @@ export const figures = createSlice({
     },
   },
 
-  selectors: {},
+  selectors: {
+    getSelectedFigure: (state) => state.selected,
+  },
 });
 
 export type FiguresState = ReturnType<typeof figures.reducer>;

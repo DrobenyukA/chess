@@ -17,6 +17,13 @@ export const session = createSlice({
     addPlayer: (state, action) => {
       state.players.push(action.payload as never);
     },
+    changePlayer: (state) => {
+      const currentPlayerIndex = state.players.findIndex(
+        (player) => player.team === state.currentPlayer.team,
+      );
+      const nextPlayerIndex = (currentPlayerIndex + 1) % state.players.length;
+      state.currentPlayer = state.players[nextPlayerIndex];
+    },
   },
 
   selectors: {

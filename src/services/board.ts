@@ -230,3 +230,83 @@ export const createFrame = (board: Board) => [
   ...createFrameRowNames(board),
   ...createFrameColumnNames(board),
 ];
+
+export const getNextRowPosition = ({ row, col }: BoardPosition) => {
+  const rowIndex = ROWS.indexOf(row);
+  const nextRowIndex = rowIndex + 1;
+
+  if (nextRowIndex < ROWS.length) {
+    return {
+      col,
+      row: ROWS[nextRowIndex],
+    };
+  }
+
+  return null;
+};
+
+export const getNextColumnsPosition = ({ row, col }: BoardPosition) => {
+  const colIndex = COLUMNS.indexOf(col);
+  const nextColIndex = colIndex + 1;
+
+  if (nextColIndex < COLUMNS.length) {
+    return {
+      col: COLUMNS[nextColIndex],
+      row,
+    };
+  }
+  return null;
+};
+
+export const getNextRowColPosition = ({ row, col }: BoardPosition) => {
+  const nextRowPosition = getNextRowPosition({ row, col });
+  const nextColPosition = getNextColumnsPosition({ row, col });
+
+  if (nextRowPosition && nextColPosition) {
+    return {
+      col: nextColPosition.col,
+      row: nextRowPosition.row,
+    };
+  }
+  return null;
+};
+
+export const getPreviousRowPosition = ({ row, col }: BoardPosition) => {
+  const rowIndex = ROWS.indexOf(row);
+  const previousRowIndex = rowIndex - 1;
+
+  if (previousRowIndex >= 0) {
+    return {
+      col,
+      row: ROWS[previousRowIndex],
+    };
+  }
+
+  return null;
+};
+
+export const getPreviousColumnsPosition = ({ row, col }: BoardPosition) => {
+  const colIndex = COLUMNS.indexOf(col);
+  const previousColIndex = colIndex - 1;
+
+  if (previousColIndex >= 0) {
+    return {
+      col: COLUMNS[previousColIndex],
+      row,
+    };
+  }
+  return null;
+};
+
+export const getPreviousRowColPosition = ({ row, col }: BoardPosition) => {
+  const previousRowPosition = getPreviousRowPosition({ row, col });
+  const previousColPosition = getPreviousColumnsPosition({ row, col });
+
+  if (previousRowPosition && previousColPosition) {
+    return {
+      col: previousColPosition.col,
+      row: previousRowPosition.row,
+    };
+  }
+  return null;
+};

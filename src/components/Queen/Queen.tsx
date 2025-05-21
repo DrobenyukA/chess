@@ -18,7 +18,7 @@ interface Props extends CommonFigureProps {
   position: [number, number, number];
 }
 
-export const Queen = (props: Props) => {
+export const Queen = ({ id, boardPosition, ...props }: Props) => {
   const ref = useRef(null);
   const { nodes } = useGLTF('/assets/figures/queen.gltf') as unknown as GLTFResult;
 

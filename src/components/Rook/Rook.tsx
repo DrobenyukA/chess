@@ -18,7 +18,7 @@ interface Props extends CommonFigureProps {
   position: [number, number, number];
 }
 
-export const Rook = (props: Props) => {
+export const Rook = ({ id, boardPosition, ...props }: Props) => {
   const ref = useRef(null);
   const { nodes } = useGLTF('/assets/figures/rook.gltf') as unknown as GLTFResult;
 
