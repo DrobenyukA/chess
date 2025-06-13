@@ -1,32 +1,32 @@
-import { FigureType } from '@app/constants/figures';
+import { PlayerTeam } from '@app/constants/players';
 import { OrbitControlsProps } from '@react-three/drei';
 import { CameraProps } from '@react-three/fiber';
 import { degToRad } from 'three/src/math/MathUtils.js';
 
 export const settings = {
   orbitControls: {
-    [FigureType.WHITE]: {
+    [PlayerTeam.WHITE]: {
       minAzimuthAngle: degToRad(90),
       maxAzimuthAngle: degToRad(-90),
     },
-    [FigureType.BLACK]: {
+    [PlayerTeam.BLACK]: {
       minAzimuthAngle: degToRad(-90),
       maxAzimuthAngle: degToRad(90),
     },
-  } as Record<FigureType, OrbitControlsProps>,
+  } as Record<PlayerTeam, OrbitControlsProps>,
   /**
    * @param rotation is set in degrees.
    */
   camera: {
-    [FigureType.WHITE]: {
+    [PlayerTeam.WHITE]: {
       position: [0, 8, -12],
       rotation: [-145, 0, -360],
       fov: 70,
     },
-    [FigureType.BLACK]: {
+    [PlayerTeam.BLACK]: {
       position: [0, 8, 12],
       rotation: [0, 0, 0],
       fov: 70,
     },
-  } as Record<FigureType, CameraProps>,
+  } as Record<PlayerTeam, CameraProps>,
 };

@@ -15,9 +15,9 @@ export const App = () => {
     setSelectedTile: board.actions.setSelectedTile,
     changeStatus: board.actions.changeStatus,
     highlightTiles: board.actions.highlightTiles,
+    changePlayer: session.actions.changePlayer,
   });
 
-  const handleAddPlayer = () => actions.addPlayer({ name: 'John Doe' });
   const handleRowChange = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
     const row = parseInt(target.value, 10) as BoardRowName;
     setState((prevState) => ({ ...prevState, row }));
@@ -35,29 +35,14 @@ export const App = () => {
   const handleSelect = () => {
     actions.setSelectedTile(s);
   };
-  const handleChangeStatuses = () => {
-    actions.changeStatus({
-      highlighted: [
-        { row: 2, col: 'c' },
-        { row: 2, col: 'd' },
-        { row: 2, col: 'e' },
-      ],
-      threat: [
-        { row: 5, col: 'f' },
-        { row: 5, col: 'g' },
-        { row: 5, col: 'h' },
-      ],
-    });
-  };
+
+  const handleChangeTeam = () => actions.changePlayer();
 
   useStateMirroringEffect();
 
   return (
     <>
       <header>
-        <div>
-          <button onClick={handleAddPlayer}>Add player</button>
-        </div>
         <div className="debug-controls">
           <select name="row" onChange={handleRowChange}>
             {ROWS.map((r) => (
@@ -75,11 +60,13 @@ export const App = () => {
           </select>
           <button onClick={handleHighlight}>Highlight</button>
           <button onClick={handleSelect}>Select</button>
-          <button onClick={handleChangeStatuses}>Change</button>
+        </div>
+        <div>
+          <button onClick={handleChangeTeam}>Change team</button>
         </div>
       </header>
       <main>
-        <Board />
+        <Board mode="alignment" />
       </main>
     </>
   );

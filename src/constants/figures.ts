@@ -1,8 +1,3 @@
-export const enum FigureType {
-  BLACK = 'black',
-  WHITE = 'white',
-}
-
 export const enum FigureName {
   PAWN = 'pawn',
   ROOK = 'rook',

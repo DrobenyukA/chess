@@ -6,27 +6,28 @@ import { Queen } from '@app/components/Queen';
 import { Rook } from '@app/components/Rook';
 import { FigureName } from '@app/constants/figures';
 import { BoardFigure as IBoardFigure } from '@app/types/board';
+import { CommonFigureProps } from '@app/types/general';
 
-type Props = IBoardFigure;
+type Props = IBoardFigure & CommonFigureProps;
 
-export const BoardFigure = ({ id, name, type, position }: Props) => {
+export const BoardFigure = ({ name, ...props }: Props) => {
   if (name === FigureName.PAWN) {
-    return <Pawn key={id} type={type} position={position} />;
+    return <Pawn key={props.id} {...props} />;
   }
   if (name === FigureName.ROOK) {
-    return <Rook key={id} type={type} position={position} />;
+    return <Rook key={props.id} {...props} />;
   }
   if (name === FigureName.KNIGHT) {
-    return <Knight key={id} type={type} position={position} />;
+    return <Knight key={props.id} {...props} />;
   }
   if (name === FigureName.BISHOP) {
-    return <Bishop key={id} type={type} position={position} />;
+    return <Bishop key={props.id} {...props} />;
   }
   if (name === FigureName.QUEEN) {
-    return <Queen key={id} type={type} position={position} />;
+    return <Queen key={props.id} {...props} />;
   }
   if (name === FigureName.KING) {
-    return <King key={id} type={type} position={position} />;
+    return <King key={props.id} {...props} />;
   }
   return null;
 };

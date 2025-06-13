@@ -1,3 +1,6 @@
+/**
+ * @deprecated in favor of PlayerTeam enum
+ */
 export const enum BoardTileType {
   White = 'white',
   Black = 'black',

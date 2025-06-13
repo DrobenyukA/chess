@@ -1,11 +1,11 @@
-import { JSX, useCallback, useRef } from 'react';
+import { PlayerTeam } from '@app/constants/players';
 import { motion } from 'framer-motion-3d';
+import { JSX, useCallback, useRef } from 'react';
 
-import { FigureType } from '@app/constants/figures';
 import { FigureMaterial } from './Material';
 
 export type Props = JSX.IntrinsicElements[`group`] & {
-  type: FigureType;
+  team: PlayerTeam;
   isSelected: boolean;
   canMoveHere: [number, number] | null;
   movingTo: [number, number] | null;
@@ -20,7 +20,7 @@ export const Figure = ({
   isSelected,
   children,
   pieceIsBeingReplaced,
-  type,
+  team,
   ...props
 }: Props) => {
   const ref = useRef(null);
@@ -64,7 +64,7 @@ export const Figure = ({
       >
         {children}
         <FigureMaterial
-          type={type}
+          team={team}
           pieceIsBeingReplaced={pieceIsBeingReplaced}
           isSelected={isSelected}
         />
